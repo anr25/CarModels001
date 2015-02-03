@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+
+    <title>CarMakes App</title>
+
+</head>
+
+<body>
+
+    <h3>Makes</h3>
+    <select id="Select01"></select>
+
+    <h3>New Model</h3>
+    <input id="Input01">
+    </input>
+
+    <br />
+    <br />
+    <button id="Save01">Save (PUT)</button>
+
+    <br/>
+    <br/>
+    <a href="/index.html">Return</a>
+
+    <script src="jquery-2.1.3.min.js"></script>
+    <script>
+        var urlDef = "/api/carmodel";
+        $(document).ready(function () {
+            $.getJSON( urlDef )
+                .done( function( json ) {
+                    var html = '';
+                    $.each(json, function (key, val) {
+                        html += '<option value="' + val + '">' + val + '</option>';
+                    });
+                    $("#Select01").append(html);
+                });
+        });
+
+        $("#Save01").click(function () {
+            var selectedMake = $("#Select01").val();
+            var newModel = $("#Input01").val();
+            $.ajax({
+                type: "PUT",
+                url: urlDef + '/' + selectedMake,
+                data: JSON.stringify(newModel),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processData: true,
+                success: function (data, status, jqXHR) {
+                },
+                error: function (xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
